@@ -1,0 +1,15 @@
+node {   
+    stage('Clone repository') {
+        git credentialsId: 'git', url: 'https://github.com/avinash2354/docker.git'
+    }
+    
+    stage('Build image') {
+       dockerImage = docker.build("avinash8476/jenkins-docker-hub:latest")
+    }
+    
+ stage('Push image') {
+        withDockerRegistry([ credentialsId: "dockerhubaccount", url: "https://hub.docker.com/u/avinash8476" ]) {
+        dockerImage.push()
+        }
+    }    
+}
